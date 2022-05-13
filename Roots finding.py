@@ -1,3 +1,5 @@
+import math
+
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
@@ -81,4 +83,79 @@ def Bisection(polynom,a,b,eps):
     print("The point is: ",c)
 
 
-Bisection_Method(polynom,-3,2,0.0001)
+
+
+def Newton_Raphson(f,start,end,eps):
+    x = sp.symbols('x')
+    f_prime=diff(f)
+    f_prime = lambdify(x, f_prime)
+    xr=round((start+end)/2,6)
+    result1=round(f(xr),6)
+    result2=round(f_prime(xr),6)
+    i=1
+    print("f'(x)         f(x)         xr      iteration num     ")
+    print(result2,"      ",result1,"      ",xr,"      ",i,"     x0=",xr)
+    xr_next=round(xr-(result1/result2),6)
+    while(abs(xr-xr_next)>eps):
+        i+=1
+        xr=round(xr_next,6)
+        result1 = round(f(xr),6)
+        result2 = round(f_prime(xr),6)
+        xr_next = round(xr - (result1 / result2),6)
+        print(result2, "      ", result1, "      ", xr, "      ", i)
+    print("the result of the function in that range is: ",xr_next)
+
+
+def secent_method(py,start,eps):
+    f=py
+    x0=start
+    x1=start+1
+    result1=round(f(x0),6)
+    result2=round(f(x1),6)
+    i=0
+    print("i      xi       xi+1       f(xi)        f(xi+1)")
+    print(i,"     ",x0,"      ",x1,"      ",result1,"      ",result2)
+    x2=round((x0*result2-x1*result1)/(result2-result1),6)
+    while(abs(x2-x1)>eps):
+        i+=1
+        x0=round(x1,6)
+        x1=round(x2,6)
+        result1=round(result2,6)
+        result2=round(f(x1),6)
+        x2 = round((x0 * result2 - x1 * result1) / (result2 - result1),6)
+        print(i, "     ", x0, "      ", x1, "      ", result1, "      ", result2)
+    print("the result of the function in that range is: ", x2)
+
+
+
+
+def main():
+    f = lambda x: (x ** 4) + (x ** 3) - (3 * (x ** 2))
+    start=-3
+    end=2
+    eps=0.0001
+    flag=True
+    while flag:
+        a=int(input("please select method 1.bisection 2.Newton Raphson 3.secent 4.exit"))
+        if a==1:
+            Bisection_Method(f,start,end,eps)
+        if a==2:
+            Newton_Raphson(f,start,end,eps)
+        if a==3:
+            secent_method(f,start,eps)
+        if a==4:
+            flag=False
+
+
+
+
+#Bisection_Method(polynom,-3,2,0.0001)
+#f=lambda x:(x**4)+(x**3)-(3*(x**2))
+#f=lambda x:(4*x**3)-(48*x)+5
+#Newton_Raphson(f,-3,2,0.0001)
+#Newton_Raphson(f,3,4,0.001)
+f=lambda x:(x**3)-math.cos(x)
+#secent_method(f,0,0.001)
+main()
+
+
