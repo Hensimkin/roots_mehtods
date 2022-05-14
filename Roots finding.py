@@ -136,7 +136,7 @@ def main():
     eps=0.0001
     flag=True
     while flag:
-        a=int(input("please select method 1.bisection 2.Newton Raphson 3.secent 4.exit"))
+        a=int(input("please select method\n1.bisection\n2.Newton Raphson\n3.secent\n4.exit"))
         if a==1:
             Bisection_Method(f,start,end,eps)
         if a==2:
